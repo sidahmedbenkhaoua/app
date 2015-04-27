@@ -32,15 +32,21 @@ public class ReadKafkaDataStream implements Serializable {
                         public CarMapper call(Tuple2<String, String> message) throws IOException {
                             mapper = new ObjectMapper();
                             carMapper = new CarMapper();
-
-                            return  carMapper = mapper.readValue(message._2(), CarMapper.class);
+                            carMapper = mapper.readValue(message._2(), CarMapper.class);
+                            return  carMapper;
                         }
                     }
         );
-
+            if(carMapper!=null){
+                checkAndInsertInCarRoad(carMapper,sparkContext);
+            }
             javaFunctions(data).writerBuilder("roadtraffic", "car", mapToRow(CarMapper.class)).saveToCassandra();
             data.print();
 
 
     }
+   public void  checkAndInsertInCarRoad(CarMapper carMapper,JavaSparkContext sparkContext){
+
+
+   }
 }
