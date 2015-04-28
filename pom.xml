@@ -125,7 +125,11 @@
             <version>7.0</version>
         </dependency>
 
-
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-sql_2.10</artifactId>
+            <version>1.1.0</version>
+        </dependency>
 
     </dependencies>
     <developers>

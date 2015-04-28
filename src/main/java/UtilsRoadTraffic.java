@@ -24,6 +24,7 @@ public class UtilsRoadTraffic implements Serializable {
     public void startStreamingLive(String a1,String a2,Map<String, Integer> a3){
         SparkConf conf = new SparkConf();
         conf.set("spark.cassandra.connection.host", "localhost");
+        conf.set("spark.driver.allowMultipleContexts","true");
         JavaSparkContext sparkContext = new JavaSparkContext("local[4]", "Spark Streaming Save Car Data", conf);
         JavaStreamingContext jssc = new JavaStreamingContext(sparkContext, new Duration(1000));
         ReadKafkaDataStream rfds = new ReadKafkaDataStream();
