@@ -4,7 +4,7 @@ import com.datastax.driver.core.*;
 import com.datastax.driver.mapping.MappingSession;
 import com.google.common.collect.Lists;
 import dz.sbenkhaoua.app.model.CarMapper;
-import dz.sbenkhaoua.app.model.CarRoad;
+import dz.sbenkhaoua.app.model.CarRoadMapper;
 import dz.sbenkhaoua.app.model.RoadMapper;
 import dz.sbenkhaoua.app.tools.PKeyGenerator;
 import dz.sbenkhaoua.app.tools.Segment;
@@ -126,13 +126,13 @@ public class ReadKafkaDataStream implements Serializable {
                 System.out.println("save start");
                 Timestamp myTimestamp=new Timestamp(new Date().getTime());
                 String dateInsert = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(myTimestamp);
-                CarRoad carRoad=new CarRoad();
-                carRoad.setCarId(carMapper.getId());
-                carRoad.setId(PKeyGenerator.get());
-                carRoad.setRoadId(road.getId());
-                carRoad.setLeaveDate("not_yet");
-                carRoad.setInsertDate(dateInsert);
-                mappingSession.save(carRoad);
+                CarRoadMapper carRoadMapper =new CarRoadMapper();
+                carRoadMapper.setCarId(carMapper.getId());
+                carRoadMapper.setId(PKeyGenerator.get());
+                carRoadMapper.setRoadId(road.getId());
+                carRoadMapper.setLeaveDate("not_yet");
+                carRoadMapper.setInsertDate(dateInsert);
+                mappingSession.save(carRoadMapper);
                 System.out.println("save end");
             }
 //            if (mapCar.get("posX") > mapRoad.get("source_side_x") && mapCar.get("posX") < mapRoad.get("target_side_x")) {

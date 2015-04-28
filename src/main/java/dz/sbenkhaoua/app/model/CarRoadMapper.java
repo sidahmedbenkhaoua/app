@@ -10,8 +10,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Table(name = "car_road")
 @XmlRootElement
-public class CarRoad {
-    public CarRoad(){
+public class CarRoadMapper {
+    public CarRoadMapper(){
 
     }
     @Id
