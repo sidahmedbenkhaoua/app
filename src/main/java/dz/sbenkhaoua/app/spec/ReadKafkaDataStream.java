@@ -1,10 +1,13 @@
+package dz.sbenkhaoua.app.spec;
+
 import com.datastax.driver.core.*;
 import com.datastax.driver.mapping.MappingSession;
 import com.google.common.collect.Lists;
-import dz.sbenkhaoua.mapper.model.CarMapper;
-import dz.sbenkhaoua.mapper.model.CarRoad;
-import dz.sbenkhaoua.mapper.model.RoadMapper;
-import org.apache.spark.SparkConf;
+import dz.sbenkhaoua.app.model.CarMapper;
+import dz.sbenkhaoua.app.model.CarRoad;
+import dz.sbenkhaoua.app.model.RoadMapper;
+import dz.sbenkhaoua.app.tools.PKeyGenerator;
+import dz.sbenkhaoua.app.tools.Segment;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
@@ -12,9 +15,6 @@ import org.apache.spark.api.java.function.Function;
 
 
 import org.apache.spark.api.java.function.PairFunction;
-import org.apache.spark.sql.api.java.*;
-import org.apache.spark.sql.api.java.Row;
-import org.apache.spark.sql.cassandra.api.java.JavaCassandraSQLContext;
 import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.api.java.JavaPairReceiverInputDStream;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -32,8 +32,6 @@ import static com.datastax.spark.connector.japi.CassandraJavaUtil.mapToRow;
 import com.datastax.spark.connector.japi.CassandraJavaUtil;
 import com.datastax.spark.connector.japi.CassandraRow;
 import com.datastax.spark.connector.japi.SparkContextJavaFunctions;
-import com.datastax.spark.connector.japi.rdd.CassandraJavaRDD;
-import static com.datastax.spark.connector.japi.CassandraJavaUtil.*;
 
 // Import Row.
 

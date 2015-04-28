@@ -1,4 +1,4 @@
-package dz.sbenkhaoua.mapper.model;
+package dz.sbenkhaoua.app.model;
 
 import javax.persistence.Column;
 import javax.persistence.Id;

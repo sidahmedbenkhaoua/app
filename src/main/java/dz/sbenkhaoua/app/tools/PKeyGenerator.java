@@ -1,3 +1,5 @@
+package dz.sbenkhaoua.app.tools;
+
 import java.util.Random;
 
 public class PKeyGenerator {

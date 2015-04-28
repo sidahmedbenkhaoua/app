@@ -1,5 +1,7 @@
+package dz.sbenkhaoua.app.spec;
+
 import com.datastax.spark.connector.cql.CassandraConnector;
-import dz.sbenkhaoua.mapper.model.CarMapper;
+import dz.sbenkhaoua.app.model.CarMapper;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.streaming.Duration;
