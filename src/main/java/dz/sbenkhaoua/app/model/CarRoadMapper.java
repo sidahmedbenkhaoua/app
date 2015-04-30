@@ -24,6 +24,9 @@ public class CarRoadMapper {
     private String insertDate;
     @Column(name = "leave_date")
     private String leaveDate;
+    @Column(name="insert_order")
+    private String insertOrder;
+
 
     public String getId() {
         return id;
@@ -63,5 +66,13 @@ public class CarRoadMapper {
 
     public void setLeaveDate(String leaveDate) {
         this.leaveDate = leaveDate;
+    }
+
+    public String getInsertOrder() {
+        return insertOrder;
+    }
+
+    public void setInsertOrder(String insertOrder) {
+        this.insertOrder = insertOrder;
     }
 }
