@@ -30,20 +30,18 @@ public class CarRoadCount implements Serializable {
         JavaRDD<com.datastax.spark.connector.japi.CassandraRow> rdd = functions.cassandraTable("roadtraffic", "car_road");
         rdd.cache();
         //khkhk start to filter all rdd with num_save is actual number
-        JavaRDD<com.datastax.spark.connector.japi.CassandraRow> rdd1=rdd.filter(new Function<com.datastax.spark.connector.japi.CassandraRow, Boolean>() {
+        JavaPairRDD<String,Integer> rdd1=rdd.filter(new Function<com.datastax.spark.connector.japi.CassandraRow, Boolean>() {
             @Override
             public Boolean call(com.datastax.spark.connector.japi.CassandraRow row) throws Exception {
 
                 return row.getString("insert_order").equals("0") ? true:false;
             }
-        });
-        JavaPairRDD<String,String> roadCar1=  rdd1.mapToPair(new PairFunction<com.datastax.spark.connector.japi.CassandraRow, String, String>() {
+        }).mapToPair(new PairFunction<com.datastax.spark.connector.japi.CassandraRow, String, String>() {
             @Override
             public Tuple2 call(com.datastax.spark.connector.japi.CassandraRow row) throws Exception {
                 return new Tuple2<String, String>(row.getString("road_id"), row.getString("car_id"));
             }
-        });
-        JavaPairRDD<String,Integer> roadByCarGroup=roadCar1.groupBy(new Function<Tuple2<String, String>, String>() {
+        }).groupBy(new Function<Tuple2<String, String>, String>() {
             @Override
             public String call(Tuple2<String, String> stringStringTuple2) throws Exception {
                 return stringStringTuple2._1();
@@ -54,8 +52,8 @@ public class CarRoadCount implements Serializable {
                 return new Tuple2<String, Integer>(stringIterableTuple2._1(), Lists.newArrayList(stringIterableTuple2._2()).size());
             }
         });
-        roadCar1.cache();
-        List<Tuple2<String, Integer>> sizesResults = roadByCarGroup.collect();
+       // roadCar1.cache();
+        List<Tuple2<String, Integer>> sizesResults = rdd1.collect();
         for(Tuple2<String, Integer> tuple : sizesResults){
             System.out.println(tuple._1() + " : " + tuple._2());
         }
