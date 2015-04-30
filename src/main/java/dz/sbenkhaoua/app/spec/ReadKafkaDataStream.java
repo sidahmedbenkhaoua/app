@@ -72,31 +72,8 @@ public class ReadKafkaDataStream implements Serializable {
 
         //checkAndInsertInCarRoad(carMapper, sparkContext);
         System.out.println("krahte !!");
+        //data.print();
         javaFunctions(data).writerBuilder("roadtraffic", "car", mapToRow(CarMapper.class)).saveToCassandra();
-
-        SparkContextJavaFunctions functions = CassandraJavaUtil.javaFunctions(sparkContext);
-        JavaRDD<CassandraRow> rdd = functions.cassandraTable("roadtraffic", "road");
-        JavaPairRDD<String, Integer> sizes = rdd.groupBy( new Function<CassandraRow, String>() {
-
-            public String call(CassandraRow row) throws Exception {
-                return row.getString("road_name");
-            }
-        }).
-                mapToPair(new PairFunction<Tuple2<String, Iterable<CassandraRow>>, String, Integer>() {
-
-                    public Tuple2<String, Integer> call(Tuple2<String, Iterable<CassandraRow>> t) throws Exception {
-                        return new Tuple2<String, Integer>(t._1(), Lists.newArrayList(t._2()).size());
-                    }
-                });
-        sizes.cache();
-
-        List<Tuple2<String, Integer>> sizesResults = sizes.collect();
-        System.out.println("logger ");
-        for(Tuple2<String, Integer> tuple : sizesResults){
-            System.out.println(tuple._1() + " : " + tuple._2());
-        }
-
-        data.print();
 
 
     }
