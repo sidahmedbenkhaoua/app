@@ -37,15 +37,26 @@ public class CarRoadCount implements Serializable {
                 return row.getString("insert_order").equals("0") ? true:false;
             }
         });
-        JavaPairRDD<String,String> roadCar1=  rdd1.mapToPair(new PairFunction<com.datastax.spark.connector.japi.CassandraRow, String, String> () {
+        JavaPairRDD<String,String> roadCar1=  rdd1.mapToPair(new PairFunction<com.datastax.spark.connector.japi.CassandraRow, String, String>() {
             @Override
             public Tuple2 call(com.datastax.spark.connector.japi.CassandraRow row) throws Exception {
                 return new Tuple2<String, String>(row.getString("road_id"), row.getString("car_id"));
             }
         });
+        JavaPairRDD<String,Integer> roadByCarGroup=roadCar1.groupBy(new Function<Tuple2<String, String>, String>() {
+            @Override
+            public String call(Tuple2<String, String> stringStringTuple2) throws Exception {
+                return stringStringTuple2._1();
+            }
+        }).mapToPair(new PairFunction<Tuple2<String, Iterable<Tuple2<String, String>>>, String, Integer>() {
+            @Override
+            public Tuple2<String, Integer> call(Tuple2<String, Iterable<Tuple2<String, String>>> stringIterableTuple2) throws Exception {
+                return new Tuple2<String, Integer>(stringIterableTuple2._1(), Lists.newArrayList(stringIterableTuple2._2()).size());
+            }
+        });
         roadCar1.cache();
-        List<Tuple2<String, String>> sizesResults = roadCar1.collect();
-        for(Tuple2<String, String> tuple : sizesResults){
+        List<Tuple2<String, Integer>> sizesResults = roadByCarGroup.collect();
+        for(Tuple2<String, Integer> tuple : sizesResults){
             System.out.println(tuple._1() + " : " + tuple._2());
         }
         //start to get pairRDD for road with number insertion
